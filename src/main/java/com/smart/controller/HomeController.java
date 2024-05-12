@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HomeController {
 
-	@RequestMapping("/home")
+	@RequestMapping("/")
 	public String home(Model model) {
 		model.addAttribute("title", "Home - Smart Contact Manager"); // This is used to provide the title as a dynamic for the home page
 		return "home";
@@ -21,4 +21,9 @@ public class HomeController {
 		return "about";
 	}
 	
+	@RequestMapping("/signup/")
+	public String signup(Model model) {
+		model.addAttribute("title", "Register - Smart Contact Manager"); // This is used to provide the title as a dynamic for the about page
+		return "signup";
+	}
 }
