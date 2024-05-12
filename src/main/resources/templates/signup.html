@@ -9,26 +9,42 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 offset-md-2">
-					<div class="my-card mt-2">
+					<div class="my-card mt-1">
 					
+						<!-- <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+						  <p class="text-center" th:text="${session.message.content}"></p>
+						  <th:block th:text="${#session.removeAttribute('message')}"></th:block>  -->
+						  
+						  <div th:if="${session.message != null}" th:classappend="${session.message.type}" class="alert" role="alert">
+							  <p class="text-center" th:text="${session.message.content}"></p>
+							</div>
+						  
+							
+							
+							
+						  
+						
+						
 						<div class="container text-center">
 							<img class="" style ="width:80px" alt="" src="" th:src="@{/img/membership.png}">
 						</div>
 					
 						<h1 class="text-center">Register Here !!</h1>
-						<form action="" th:action="@{do_register}" method="post">
+						<form action="" th:action="@{do_register}" method="post" th:object="${user}">
 							
 							<!-- name field  -->
 							
 							<div class="form-group">
 							    <label for="name_field">Your name</label>
 							    <input 
+							    	name="name"
 							    	type="text" 
 							    	class="form-control" 
 							    	id="name_field" 
 							    	aria-describedby="emailHelp"
 							    	placeholder="Enter here"
 							    	required
+							    	th:value="${user.name}"
 							    	/>
 							 </div>
 							 
@@ -37,12 +53,14 @@
 							<div class="form-group">
 							    <label for="email_field">Your email</label>
 							    <input 
+							    	name="email"
 							    	type="email" 
 							    	class="form-control" 
 							    	id="email_field" 
 							    	aria-describedby="emailHelp"
 							    	placeholder="Enter here"
 							    	required
+							    	th:value="${user.email}"
 							    	/>
 							 </div>
 							 
@@ -51,6 +69,7 @@
 							<div class="form-group">
 							    <label for="password_field">Your Password</label>
 							    <input 
+							    	name="password"
 							    	type="password" 
 							    	class="form-control" 
 							    	id="password_field" 
@@ -63,11 +82,24 @@
 							 <!-- user about field -->
 							<div class="form-group">
 							
-								<textarea placeholder="Enter about yourself" rows="6" class="form-control"></textarea>
+								<textarea name="about" th:value="${user.about}" placeholder="Enter about yourself" rows="6" class="form-control"></textarea>
 							
 							</div>
 							
+							<!-- terms and conditions agreeement -->
+							<div class="form-group form-check text-center">
+								
+								<input type="checkbox"
+									name="agreement"
+									class="form-check-input"
+									id="agreement"
+									/>
+								<label for="agreement">Accept terms and conditions</label>
+							</div>
+							
 							<div class="container text-center" >
+							
+							<!-- button field  -->
 								<button type="submit" class="btn bg-primary btn-block text-white">
 									Submit
 								</button>
