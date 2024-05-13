@@ -7,9 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import com.smart.entities.User;
 
@@ -62,18 +64,24 @@ public class Myconfig {
 	 * auth.requestMatchers("/user/**").hasRole("USER");
 	 * auth.requestMatchers("/**").permitAll(); }) .httpBasic() .build(); }
 	 */
-	
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests() // Use correct method for authorization rules
-                .requestMatchers("/admin/**").hasRole("ROLE_ADMIN") // Check for role with prefix
-                .requestMatchers("/user/**").hasRole("ROLE_USER")
-                .anyRequest().authenticated() // Require authentication for other requests
-            .and()
-            .formLogin() // Enable form-based login
-                .permitAll() // Allow access to login page
-            .and()
-            .csrf().disable(); // Disable CSRF for simplicity (consider enabling in production)
-        return http.build();
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(registry -> {
+                    
+                    registry.requestMatchers("/admin/**").hasRole("ADMIN");
+                    registry.requestMatchers("/user/**").hasRole("USER");
+                    registry.requestMatchers("/**").permitAll();
+                    registry.anyRequest().authenticated();
+                })
+                .formLogin(form ->form
+                		.loginPage("/signin")
+                		.permitAll())
+                
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .permitAll())
+                .build();
     }
 }
