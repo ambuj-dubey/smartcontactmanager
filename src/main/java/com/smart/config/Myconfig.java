@@ -77,6 +77,8 @@ public class Myconfig {
                 })
                 .formLogin(form ->form
                 		.loginPage("/signin")
+                		.loginProcessingUrl("/dologin")
+                		.defaultSuccessUrl("/user/index")
                 		.permitAll())
                 
                 .logout(logout -> logout
