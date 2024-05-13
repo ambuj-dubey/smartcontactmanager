@@ -1,10 +1,13 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="normal/base::layout(~{::section})"> <!-- now from here we will pass the section and where ever layout will get called by the fragment section content will appear -->
 <head>
 	<meta charset="UTF-8" />
-	<title>User Dashboard</title>
+	<title>This is about page</title>
 </head>
 <body>
-	<h1>Welcome you normal user</h1>
+	<section>
+		<h1>THis is private dashboard</h1>
+	</section>
 </body>
 </html>
+
