@@ -10,6 +10,14 @@
     	href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" 
     	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
     	crossorigin="anonymous">
+    
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
+		    integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" 
+		    crossorigin="anonymous" 
+		    referrerpolicy="no-referrer" />
+		    
+		 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css" />
+		 
     	
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 
@@ -44,8 +52,33 @@
 		  </div>
 		</nav>
 		<!-- END NAVBAR -->
+		<!-- Sidebar  -->
+	<div class="sidebar">
 		
-	<div th:replace="${content}"></div>
+		<span onclick="togglesidebar()" class="crossBtn">&times;</span>
+	
+		<a href="#" class="item"><i class="fa-solid fa-house"></i> Home</a>
+		<a href="#" class="item"><i class="fa-solid fa-address-book"></i> View Contacts</a>
+		<a href="#" class="item"><i class="fa-solid fa-user-plus"></i> Add Contact</a>
+		<a href="#" class="item"><i class="fa-solid fa-user"></i>Your Profile</a>
+		<a href="#" class="item"><i class="fa-solid fa-gear"></i> Settings</a>
+		<a href="#" class="item"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+		
+		<div class="divider">
+		
+		</div>
+		
+	</div>
+	<!-- End Sidebar  -->
+	
+	<!-- Content Area -->
+	<div class="content">
+		<i onclick="togglesidebar()" class="fas fa-bars m-3"></i>
+		<div th:replace="${content}"></div>
+	
+	</div>
+	
+	<!-- Content Area -->
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
