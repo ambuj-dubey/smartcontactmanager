@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 
+import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.smart.dao.UserRepository;
 import com.smart.entities.Contact;
 import com.smart.entities.User;
+import com.smart.helper.*;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/user")
@@ -28,7 +32,6 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
 	//method to hiding common data to response
 	@ModelAttribute
 	public void addCommonData(Model model, Principal principal) {
@@ -61,7 +64,7 @@ public class UserController {
 	public String processContact(
 			@ModelAttribute Contact contact,
 			@RequestParam("profileImage") MultipartFile file,
-			Principal principal) {
+			Principal principal,HttpSession session) {
 		try {
 						
 			String name=principal.getName();
@@ -69,7 +72,8 @@ public class UserController {
 			
 			//processing and uploading file
 			if(file.isEmpty()) {
-				//if file is eampty then try our message
+				//if file is empty then try our message
+				System.out.println("File is empty");
 				
 			}else {
 				//upload file to folder and update to contact
@@ -82,12 +86,18 @@ public class UserController {
 			
 			contact.setUser(user);											//before this line was added I was not gettting the userid in the contact tabele
 			user.getContacts().add(contact);								//then contact is added to the user
-			this.userRepository.save(user);									//then save it
+			this.userRepository.save(user);	
+			System.out.println("DATA "+contact);//then save it
 			System.out.println("Added to database");
-			System.out.println("DATA "+contact);
+			//message success
+			//session.setAttribute("message", new Message("Your contact is added!! Add more..","success"));
+			session.setAttribute("message", new com.smart.helper.Message("Your contact is added!! Add more..","success"));
 		}catch(Exception e) {
 			System.out.println("ERROR "+ e.getMessage());
 			e.printStackTrace();
+			//error message
+			//session.setAttribute("message", new Message("SOmething went wrong.. Try Again!!..","danger"));
+			session.setAttribute("message", new com.smart.helper.Message("SOmething went wrong.. Try Again!!..","danger"));
 		}
 		return "normal/add_contact_form";
 	}
