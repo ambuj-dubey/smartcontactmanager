@@ -140,7 +140,7 @@ public class UserController {
 	
 	//showing particular contact detail
 	@GetMapping("/{cId}/contact")
-	public String showContactDetails(@PathVariable("cId") Integer cId, Model model) {
+	public String showContactDetails(@PathVariable("cId") Integer cId, Model model,Principal principal) {
 		System.out.println("CID "+cId);
 		
 		Optional<Contact> contactOptional =  this.contactRepository.findById(cId);
@@ -155,7 +155,13 @@ public class UserController {
 		}else {
 			System.out.println("Contact is null "+ contact);
 		}
-		model.addAttribute("contact", contact);
+		String userName = principal.getName();							//this is used here for thesecurity perpose so that user can 
+		User user = this.userRepository.getUserByUserName(userName);
+		if(user.getId() == contact.getUser().getId()) {
+			
+			model.addAttribute("contact", contact);
+			model.addAttribute("title", contact.getName());
+		}
 		return "normal/contact_detail";
 	}
 	
