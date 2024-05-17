@@ -28,6 +28,7 @@ import com.smart.dao.ContactRepository;
 import com.smart.dao.UserRepository;
 import com.smart.entities.Contact;
 import com.smart.entities.User;
+import com.smart.helper.Message;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -163,6 +164,20 @@ public class UserController {
 			model.addAttribute("title", contact.getName());
 		}
 		return "normal/contact_detail";
+	}
+	
+	//Delete contact handler 
+	@GetMapping("/delete/{cid}")
+	public String deleteContact(@PathVariable("cid") Integer cId, Model model,HttpSession session) {
+		Optional<Contact> contactOptional =this.contactRepository.findById(cId);
+		Contact contact = contactOptional.get();
+		contact.setUser(null);								//here I am unlinking the user from the contact becasue we have made cascade reation
+		this.contactRepository.delete(contact);
+		System.out.println("DELETED...");
+		
+		//
+		session.setAttribute("message", new Message("Contact deleted succesfully....","success"));
+		return "redirect:/user/show-contacts/0";
 	}
 	
 	
