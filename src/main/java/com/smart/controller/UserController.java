@@ -7,8 +7,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
-import org.aspectj.bridge.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
@@ -28,7 +28,6 @@ import com.smart.dao.ContactRepository;
 import com.smart.dao.UserRepository;
 import com.smart.entities.Contact;
 import com.smart.entities.User;
-import com.smart.helper.*;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -83,6 +82,7 @@ public class UserController {
 			if(file.isEmpty()) {
 				//if file is empty then try our message
 				System.out.println("File is empty");
+				contact.setImage("contact.jpg");
 				
 			}else {
 				//upload file to folder and update to contact
@@ -110,6 +110,7 @@ public class UserController {
 		}
 		return "normal/add_contact_form";
 	}
+	
 	//show contacts handler
 	//per page = 5[n]
 	//current page = 0 [page]
@@ -137,6 +138,26 @@ public class UserController {
 		return "normal/show_contacts";
 	}
 	
+	//showing particular contact detail
+	@GetMapping("/{cId}/contact")
+	public String showContactDetails(@PathVariable("cId") Integer cId, Model model) {
+		System.out.println("CID "+cId);
+		
+		Optional<Contact> contactOptional =  this.contactRepository.findById(cId);
+		if(contactOptional.isEmpty()) {
+			System.out.println("ID not found");
+		}else {
+			System.out.println("contactOptional "+contactOptional);
+		}
+		Contact contact = contactOptional.get();
+		if(contact != null) {
+			System.out.println("Contact is not null "+ contact);
+		}else {
+			System.out.println("Contact is null "+ contact);
+		}
+		model.addAttribute("contact", contact);
+		return "normal/contact_detail";
+	}
 	
 	
 	
