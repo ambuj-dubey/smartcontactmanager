@@ -36,7 +36,10 @@
 					      <td th:text="${c.phone}">@mdo</td>
 					      <td>
 					      	<a href="#" th:onclick="|deleteContact(${c.cId})|" class="btn btn-danger btn-sm">Delete</a>
-					      	<button class="btn btn-success btn-sm">Update</button>
+					      	<form method="post" th:action="@{'/user/update-contact/'+${c.cId}}" class="mt-3">
+					      		
+					      		<button type="submit" class="btn btn-success btn-sm">Update</button>
+					      	</form>
 					      </td>
 					    </tr>
 					    
