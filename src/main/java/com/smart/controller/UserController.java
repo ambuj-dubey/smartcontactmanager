@@ -169,11 +169,17 @@ public class UserController {
 	
 	//Delete contact handler 
 	@GetMapping("/delete/{cid}")
-	public String deleteContact(@PathVariable("cid") Integer cId, Model model,HttpSession session) {
+	public String deleteContact(@PathVariable("cid") Integer cId, Model model,HttpSession session, Principal principal) {
 		Optional<Contact> contactOptional =this.contactRepository.findById(cId);
 		Contact contact = contactOptional.get();
-		contact.setUser(null);								//here I am unlinking the user from the contact becasue we have made cascade reation
-		this.contactRepository.delete(contact);
+		/* the below code was not working for delete as it was just removing the id and set it as null in the databse
+		 * contact.setUser(null); //here I am unlinking the user from the contact
+		 * becasue we have made cascade reation this.contactRepository.delete(contact);
+		 */
+		String userName = principal.getName();
+		User user = this.userRepository.getUserByUserName(userName);
+		user.getContacts().remove(contact);						//this will call equals method of contact
+		this.userRepository.save(user);
 		System.out.println("DELETED...");
 		
 		//

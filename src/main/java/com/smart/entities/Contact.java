@@ -88,7 +88,10 @@ public class Contact {
 	 * ", user=" + user + "]"; }
 	 */
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		return this.cId==((Contact)obj).getcId();
+	}
 	
 	
 	

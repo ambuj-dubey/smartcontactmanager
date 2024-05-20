@@ -40,7 +40,7 @@ public class User {
 	@Column(length = 500)
 	private String about;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch=FetchType.LAZY,mappedBy = "user")	//from this we can clearly see that we are applying one to many (one users to many contacts) here mappedBy added aditionally to avoid th extra table because another table got created with user_contact.
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)	//from this we can clearly see that we are applying one to many (one users to many contacts) here mappedBy added aditionally to avoid th extra table because another table got created with user_contact.
 	private List<Contact> contacts = new ArrayList<>();			//One users will have many contact so here we took list to store all the contacts
 	
 	public User() {
